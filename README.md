@@ -36,10 +36,10 @@
 ### Adamento do projeto:
   
    Com o decorrer do projeto novas _features_ serão implementadas entre elas:
-   . Leituras de temperatura e umidade do ar pelo sensor DHT11;
-   . Desenvolvimento de um sensor para ler a umidade do solo e sua devida integração com o software;
-   . Desenvolvimento do Timer aumentando suas funcionalidades e melhorando seu desempenho;
-   . Gravação dos dados obtidos em um banco de dados.
+   * Leituras de temperatura e umidade do ar pelo sensor DHT11;
+   * Desenvolvimento de um sensor para ler a umidade do solo e sua devida integração com o software;
+   * Desenvolvimento do Timer aumentando suas funcionalidades e melhorando seu desempenho;
+   * Gravação dos dados obtidos em um banco de dados.
    
 ### Para um futuro distante:
    
