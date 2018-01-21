@@ -29,6 +29,7 @@
 ## Funcionamento:
 
    ![Pagina Inicial](https://github.com/98Glopes/pygarden-1.0/blob/master/templates/index.fw.png)
+   
    A pagina inicial funciona basicamente para visualizar as condições do sistema, sendo possivel ver as leituras dos sensores de temperautra, umidade do ar e umidade do solo (estas funcionalidades ainda não foram de fato implementadas) além do estado atual das valvulas de irrigação, sendo possivel ligar ou desligar uma valvula independente do timer. 
    Ao clicar na camera logo a baixo do titulo, o app redireciona o usuário para um pagina que exibe em tempo real as imagens obtidas pela camera.
    
