@@ -34,7 +34,12 @@
    Ao clicar na camera logo a baixo do titulo, o app redireciona o usuário para um pagina que exibe em tempo real as imagens obtidas pela camera.
    
 ### Adamento do projeto:
-  
+
+   _Features_ já implementadas:
+   * Controle das valvulas de irrigação pela pagina web do app;
+   * Controle das valvulas pelo timer (ao menos de uma delas até o momento);
+   * Streaming de video a partir de que será posicionada sobre o vaso.
+   
    Com o decorrer do projeto novas _features_ serão implementadas entre elas:
    * Leituras de temperatura e umidade do ar pelo sensor DHT11;
    * Desenvolvimento de um sensor para ler a umidade do solo e sua devida integração com o software;
