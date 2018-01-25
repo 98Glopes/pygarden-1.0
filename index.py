@@ -5,11 +5,12 @@ from hardware import *
 from camera import *
 import traceback
 
-#board_init()
-dht = dht(41)
-v1 = valve(11)
-v2 = valve(13)
-v3 = valve(15)	
+board_init()
+dht = dht(4)
+v1 = valve(17)
+v2 = valve(27)
+v3 = valve(22)
+
 	
 app = Flask(__name__)
 
@@ -25,7 +26,6 @@ def home(): #home page do pygarden
 def change_state(valvula): #reexibe a homepage do pygarden, mas atualiza as valvulas
 	if valvula == 'v1':
 		v1.change_state()
-		return 'ok'
 	elif valvula == 'v2':
 		v2.change_state()
 	elif valvula == 'v3':
@@ -47,12 +47,7 @@ def video_feed():
 	
 @app.route('/valv' , methods=['GET' , 'POST'])
 def valv():
-	if request.method == 'POST':
-		try: 
-			data = json.loads(request.data.decode())
-		except Exception:
-			return 'error'
-		v1.change_state()
+	v1.change_state()
 	return 'ok'
 
 @app.route('/img')
