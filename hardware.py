@@ -1,5 +1,5 @@
 import RPi.GPIO as gpio
-import Adafruit_DHT as dht
+import Adafruit_DHT
 '''
 GPIO -> Hardware
 setup -> BOARD
@@ -44,7 +44,7 @@ class dht(object):
 		self.io = io
 		self.temp = 0
 		self.umid = 0
-		self.sensor = dht.DHT11
+		self.sensor = Adafruit_DHT.DHT11
 	
 	@property
 	def temperatura(self):
@@ -56,7 +56,7 @@ class dht(object):
 		
 	def read(self):
 		try:
-			self.umid, self.temp = dht.read_retry(self.sensor, self.io)
+			self.umid, self.temp = Adafruit_DHT.read_retry(self.sensor, self.io)
 		except Exeception:
 			self.umid , self.temp = 404, 404
 		pass
