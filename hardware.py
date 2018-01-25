@@ -15,7 +15,7 @@ class valve(object):
 	def __init__(self, io):
 		self.io = io
 		self.state = False
-		gpio.setup(self.io , gpio.OUT) #configura o pino como sa?da
+		#gpio.setup(self.io , gpio.OUT) #configura o pino como sa?da
 		
 	@property
 	def img_link(self):
@@ -33,10 +33,10 @@ class valve(object):
 			a partir daqui ele manipula as GPIO do RPi//os pinos funcionam com logica invertida			
 		'''
 		
-		if self.state == True:
-			gpio.output(self.io , gpio.LOW)
-		else:
-			gpio.output(self.io , gpio.HIGH)
+#		if self.state == True:
+#			gpio.output(self.io , gpio.LOW)
+#		else:
+#			gpio.output(self.io , gpio.HIGH)
 		
 class dht(object):
 	
