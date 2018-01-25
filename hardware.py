@@ -1,12 +1,13 @@
-#import RPi.GPIO as gpio
+import RPi.GPIO as gpio
+import Adafruit_DHT as dht
 '''
 GPIO -> Hardware
 setup -> BOARD
 
-7 - dht11
-11 - v1
-13 - v2
-15 - v3
+4 - dht11
+17 - v1
+27 - v2
+22 - v3
 '''
 
 class valve(object):
@@ -14,7 +15,7 @@ class valve(object):
 	def __init__(self, io):
 		self.io = io
 		self.state = False
-#		gpio.setup(self.io , gpio.OUT) #configura o pino como sa?da
+		gpio.setup(self.io , gpio.OUT) #configura o pino como sa?da
 		
 	@property
 	def img_link(self):
@@ -32,10 +33,10 @@ class valve(object):
 			a partir daqui ele manipula as GPIO do RPi//os pinos funcionam com logica invertida			
 		'''
 		
-#		if self.state == True:
-#			gpio.output(self.io , gpio.LOW)
-#		else:
-#			gpio.output(self.io , gpio.HIGH)
+		if self.state == True:
+			gpio.output(self.io , gpio.LOW)
+		else:
+			gpio.output(self.io , gpio.HIGH)
 		
 class dht(object):
 	
@@ -43,21 +44,23 @@ class dht(object):
 		self.io = io
 		self.temp = 0
 		self.umid = 0
+		self.sensor = dht.DHT11
 	
 	@property
 	def temperatura(self):
-		return '{}ºC'.format(self.temp)
+		return '{}ยบC'.format(self.temp)
 	
 	@property
 	def umidade(self):
 		return '{}%'.format(self.umid)
 		
 	def read(self):
-#	'''
-#	Le os valores do sensor e retorna pras variaveis self.temp e self.umid
-#		'''
+		try:
+			self.umid, self.temp = dht.read_retry(self.sensor, self.io)
+		except Exeception:
+			self.umid , self.temp = 404, 404
 		pass
 		
 def board_init():
-#	gpio.setmode(gpio.BOARD)
+	gpio.setmode(gpio.BOARD)
 	return 'Ok'
