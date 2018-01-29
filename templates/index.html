@@ -43,7 +43,7 @@ td img {display: block;}.arial {
     
     <tr>
       <td colspan="14" bgcolor="#339966"><div align="center"><strong class="arial">PyGARDEN</strong></div>
-      <strong><a href="http://127.0.0.1:5000/stream"><img src="../static/img/cam.png" width="35" height="35" align="right" /></a></strong></td>
+      <strong><a href="https://127.0.0.1:5000/stream"><img src="../static/img/cam.png" width="35" height="35" align="right" /></a></strong></td>
       <td><img src="spacer.gif" width="1" height="140" alt="" /></td>
     </tr>
     <tr>
@@ -95,12 +95,12 @@ td img {display: block;}.arial {
     </tr>
     <tr>
       <td rowspan="3" bgcolor="#FBFBFB"></td>
-      <td colspan="2" bgcolor="#FBFBFB"><a href="http://127.0.0.1:5000/v1"><img src={{img[0]}} width="41" height="44" /</a></td>
+      <td colspan="2" bgcolor="#FBFBFB"><span id="v1" style="cursor: pointer;"><img id="imgv1" src={{img[0]}} width="41" height="44" /></span></td>
       <td rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
       <td colspan="2" rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="3" bgcolor="#FBFBFB"><a href="http://127.0.0.1:5000/v2"><img src={{img[1]}} width="41" height="44" /></a></td>
+      <td colspan="3" bgcolor="#FBFBFB"><span id="v2" style="cursor: pointer;"><img id="imgv2" src={{img[1]}} width="41" height="44" /></span></td>
       <td colspan="2" rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="2" rowspan="2" bgcolor="#FBFBFB"><a href="http://127.0.0.1:5000/v3"><img src={{img[2]}} width="41" height="44" /></a></td>
+      <td colspan="2" bgcolor="#FBFBFB"><span id="v3" style="cursor: pointer;"><img id="imgv3" src={{img[2]}} width="41" height="44" /></span></td>
       <td rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
       <td><img src="spacer.gif" width="1" height="44" alt="" /></td>
     </tr>
@@ -115,5 +115,53 @@ td img {display: block;}.arial {
     </tr>
   </table>
 </div>
+<script type="text/javascript">
+(function() {
+  var httpRequest;
+  var pumpOff = '../static/img/pump_off.png'
+  var pumpOn  = '../static/img/pump_on.png'
+  document.getElementById("v1").onclick = function() { makeRequest('https://127.0.0.1:5000/valve/v1');};
+  document.getElementById("v2").onclick = function() { makeRequest('https://127.0.0.1:5000/valve/v2');};
+  document.getElementById("v3").onclick = function() { makeRequest('https://127.0.0.1:5000/valve/v3');};
+  
+
+
+  function makeRequest(url) {
+    if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+      httpRequest = new XMLHttpRequest();
+    } else if (window.ActiveXObject) { // IE
+      try {
+        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+      } 
+      catch (e) {
+        try {
+          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        } 
+        catch (e) {}
+      }
+    }
+
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', url);
+    httpRequest.send();
+  }
+
+  function alertContents() {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        date = JSON.parse(httpRequest.responseText);
+		document.getElementById(date.valveId).setAttribute('src', date.newSrc);
+      } else {
+        alert('There was a problem with the request.');
+      }
+    }
+  }
+ 
+})();
+</script>
 </body>
 </html>
