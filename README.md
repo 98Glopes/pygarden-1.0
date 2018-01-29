@@ -20,7 +20,7 @@
 
 ### timer.py
 
-   Script que roda a parte da aplicação principal e é responsavel por fazer 'avisar' ao app quando for necessário acionar ou desativar uma valvula de irrigação. O script utiliza do módulo timer para contar um tempo X (ou verificar o horário do dia) e manda uma solicitação GET pro app principal executar a mudança.
+   Script desabilitado, em seu lugar será usado a librarie Threading, que sempre que o server inicia ele incia junto uma nova thread para contar o tempo, acionar, ler e gravar os sensores/atuadores no banco de dados
    
 ## Templates HTML:
 
@@ -38,10 +38,11 @@
    _Features_ já implementadas:
    * Controle das valvulas de irrigação pela pagina web do app;
    * Controle das valvulas pelo timer (ao menos de uma delas até o momento);
-   * Streaming de video a partir de que será posicionada sobre o vaso.
+   * Streaming de video a partir de que será posicionada sobre o vaso;
+   * Camada de javascript para melhorar a interação client/server;
+   * Leituras de temperatura e umidade do ar pelo sensor DHT11.
    
-   Com o decorrer do projeto novas _features_ serão implementadas entre elas:
-   * Leituras de temperatura e umidade do ar pelo sensor DHT11;
+   Com o decorrer do projeto novas _features_ serão implementadas entre elas:   
    * Desenvolvimento de um sensor para ler a umidade do solo e sua devida integração com o software;
    * Desenvolvimento do Timer aumentando suas funcionalidades e melhorando seu desempenho;
    * Gravação dos dados obtidos em um banco de dados.
