@@ -63,10 +63,10 @@ td img {display: block;}.arial {
     </tr>
     <tr>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="3" bgcolor="#ECEAE4">{{sensores[0]}}</td>
+      <td colspan="3" bgcolor="#ECEAE4"><div  id="temp">{{sensores[0]}}</div></td>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="2" bgcolor="#ECEAE4">{{sensores[1]}}</td>
+      <td colspan="2" bgcolor="#ECEAE4"><div id="umid">{{sensores[1]}}</div></td>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
       <td><img src="spacer.gif" width="1" height="70" alt="" /></td>
     </tr>
@@ -115,53 +115,7 @@ td img {display: block;}.arial {
     </tr>
   </table>
 </div>
-<script type="text/javascript">
-(function() {
-  var httpRequest;
-  var pumpOff = '../static/img/pump_off.png'
-  var pumpOn  = '../static/img/pump_on.png'
-  document.getElementById("v1").onclick = function() { makeRequest('https://127.0.0.1:5000/valve/v1');};
-  document.getElementById("v2").onclick = function() { makeRequest('https://127.0.0.1:5000/valve/v2');};
-  document.getElementById("v3").onclick = function() { makeRequest('https://127.0.0.1:5000/valve/v3');};
-  
-
-
-  function makeRequest(url) {
-    if (window.XMLHttpRequest) { // Mozilla, Safari, ...
-      httpRequest = new XMLHttpRequest();
-    } else if (window.ActiveXObject) { // IE
-      try {
-        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
-      } 
-      catch (e) {
-        try {
-          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-        } 
-        catch (e) {}
-      }
-    }
-
-    if (!httpRequest) {
-      alert('Giving up :( Cannot create an XMLHTTP instance');
-      return false;
-    }
-    httpRequest.onreadystatechange = alertContents;
-    httpRequest.open('GET', url);
-    httpRequest.send();
-  }
-
-  function alertContents() {
-    if (httpRequest.readyState === 4) {
-      if (httpRequest.status === 200) {
-        date = JSON.parse(httpRequest.responseText);
-		document.getElementById(date.valveId).setAttribute('src', date.newSrc);
-      } else {
-        alert('There was a problem with the request.');
-      }
-    }
-  }
- 
-})();
+<script type="text/javascript" src="./static/js/main.js">
 </script>
 </body>
 </html>

@@ -41,13 +41,22 @@ def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 					
-
+@app.route('/dht')
+def temp():
+	return jsonify({
+		'temperatura':dht.temp,
+		'umidade':dht.umid
+		})
+	
+	
+	
 @app.before_first_request
 def activate_job():
 	def run_job(): 
 	#starta comunicação com a database
 		conn = sqlite3.connect('pygarden.db')
 		curso = conn.cursor()
+		contador = 0
 		#leitura incial dos sensores
 		s1.read()
 		s2.read()
@@ -65,11 +74,14 @@ def activate_job():
 			dht.read()
 			leituras = np.array([[s1.ground, s2.ground, s3.ground,
 								dht.umid, dht.temp]])
-			if ((time.time() - init) > 60):
+			if contador >= 100:
 				#grava os dados dos sensores a cada 1 minuto e bate uma foto
-				pass
+				print('Burning')
+				print(dht.read())
+				contador = 0 
+			contador += 1
 			print('Run current Task')
-			time.sleep(10)
+			time.sleep(1)
 	thread = threading.Thread(target=run_job)
 	thread.start()
 

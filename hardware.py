@@ -69,7 +69,8 @@ class dht(object):
 #			self.umid, self.temp = Adafruit_DHT.read_retry(self.sensor, self.io)
 #		except Exeception:
 #			self.umid , self.temp = 404, 404
-		pass
+		self.umid , self.temp = self.umid+1 , self.temp+1
+		return self.umid , self.temp
 		
 class hygrometer(object):
 	
