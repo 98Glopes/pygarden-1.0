@@ -37,10 +37,13 @@
 
    _Features_ já implementadas:
    * Controle das valvulas de irrigação pela pagina web do app;
-   * Controle das valvulas pelo timer (ao menos de uma delas até o momento);
+   * Controle das valvulas pelo timer (server-side);
    * Streaming de video a partir de que será posicionada sobre o vaso;
    * Camada de javascript para melhorar a interação client/server;
-   * Leituras de temperatura e umidade do ar pelo sensor DHT11.
+   * Leituras de temperatura e umidade do ar pelo sensor DHT11;   
+   * Acréscimo de uma tela de login, sem DB, LOGIN:admim SENHA:admim;
+   * Atualização dinamica dos dados, sem depender de ações do user.
+   * Timer em js para executar tarefas rotineiras.
    
    Com o decorrer do projeto novas _features_ serão implementadas entre elas:   
    * Desenvolvimento de um sensor para ler a umidade do solo e sua devida integração com o software;
