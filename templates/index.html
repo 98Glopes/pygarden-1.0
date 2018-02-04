@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=0">
+
 <style type="text/css">
 td img {display: block;}.arial {
 	font-family: Arial, Helvetica, sans-serif;
@@ -20,6 +21,7 @@ td img {display: block;}.arial {
 <!--Fireworks CS6 Dreamweaver CS6 target.  Created Fri Jan 12 20:08:49 GMT-0200 2018-->
 </head>
 <body bgcolor="#ffffff">
+
 <div align="center">
   <table style="display: inline-table;" border="0" cellpadding="0" cellspacing="0" width="550">
     <!-- fwtable fwsrc="home.fw.png" fwpage="Página 1" fwbase="index.png" fwstyle="Dreamweaver" fwdocid = "179195531" fwnested="0" -->
@@ -43,7 +45,7 @@ td img {display: block;}.arial {
     
     <tr>
       <td colspan="14" bgcolor="#339966"><div align="center"><strong class="arial">PyGARDEN</strong></div>
-      <strong><a href="https://127.0.0.1:5000/stream"><img src="../static/img/cam.png" width="35" height="35" align="right" /></a></strong></td>
+      <strong><a href={{ url_for('stream') }}><img src="../static/img/cam.png" width="35" height="35" align="right" /></a></strong></td>
       <td><img src="spacer.gif" width="1" height="140" alt="" /></td>
     </tr>
     <tr>
@@ -63,10 +65,10 @@ td img {display: block;}.arial {
     </tr>
     <tr>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="3" bgcolor="#ECEAE4"><div  id="temp">{{sensores[0]}}</div></td>
+      <td colspan="3" bgcolor="#ECEAE4"><div  id="temp">{{ sensor[0] }}ºC</div></td>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="2" bgcolor="#ECEAE4"><div id="umid">{{sensores[1]}}</div></td>
+      <td colspan="2" bgcolor="#ECEAE4"><div id="umid">{{ sensor[1] }}%</div></td>
       <td colspan="2" rowspan="2" bgcolor="#FBFBFB">&nbsp;</td>
       <td><img src="spacer.gif" width="1" height="70" alt="" /></td>
     </tr>
@@ -95,12 +97,12 @@ td img {display: block;}.arial {
     </tr>
     <tr>
       <td rowspan="3" bgcolor="#FBFBFB"></td>
-      <td colspan="2" bgcolor="#FBFBFB"><span id="v1" style="cursor: pointer;"><img id="imgv1" src={{img[0]}} width="41" height="44" /></span></td>
+      <td colspan="2" bgcolor="#FBFBFB"><span id="v1" style="cursor: pointer;"><img id="imgv1" src={{ img[0] }} width="41" height="44" /></span></td>
       <td rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
       <td colspan="2" rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="3" bgcolor="#FBFBFB"><span id="v2" style="cursor: pointer;"><img id="imgv2" src={{img[1]}} width="41" height="44" /></span></td>
+      <td colspan="3" bgcolor="#FBFBFB"><span id="v2" style="cursor: pointer;"><img id="imgv2" src={{ img[1] }} width="41" height="44" /></span></td>
       <td colspan="2" rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
-      <td colspan="2" bgcolor="#FBFBFB"><span id="v3" style="cursor: pointer;"><img id="imgv3" src={{img[2]}} width="41" height="44" /></span></td>
+      <td colspan="2" bgcolor="#FBFBFB"><span id="v3" style="cursor: pointer;"><img id="imgv3" src={{ img[2] }} width="41" height="44" /></span></td>
       <td rowspan="3" bgcolor="#FBFBFB">&nbsp;</td>
       <td><img src="spacer.gif" width="1" height="44" alt="" /></td>
     </tr>
@@ -117,5 +119,6 @@ td img {display: block;}.arial {
 </div>
 <script type="text/javascript" src="./static/js/main.js">
 </script>
+
 </body>
 </html>

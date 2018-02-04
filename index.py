@@ -1,5 +1,6 @@
 # Creditos pela parte do stream: http://blog.miguelgrinberg.com/post/video-streaming-with-flask
-from flask import Flask , request, render_template , Response ,jsonify
+from flask import Flask , request, render_template , Response ,jsonify, redirect, url_for, flash, request, session, abort
+import os
 import threading
 from hardware import *
 from camera import *
@@ -10,11 +11,12 @@ import numpy as np
 import json
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/home')
 def home(): #home page do pygarden
-	sensores = [dht.temperatura , dht.umidade]
-	img = [v1.img_link , v2.img_link , v3.img_link]
-	return render_template('index.html' , sensores=sensores , img=img)
+	if not session.get('logged_in'):
+		return render_template('login.html')
+	else:
+		return render_template('index.html', img=(v1.img_link , v2.img_link , v3.img_link), sensor=dht.read())
 	
 @app.route('/valve/<valvula>')
 def change_state(valvula): #reexibe a homepage do pygarden, mas atualiza as valvulas
@@ -26,14 +28,14 @@ def change_state(valvula): #reexibe a homepage do pygarden, mas atualiza as valv
 		return v2.genJson('imgv2')
 	elif valvula == 'v3':
 		v3.change_state()
-		return v3.genJson('imgv3')
-		
-		
+		return v3.genJson('imgv3')		
 	return Response('valve not found')
 
 
 @app.route('/stream')
 def stream():
+	if not session.get('logged_in'):
+		return render_template('login.html')
 	return render_template('stream.html')
 	
 @app.route('/video_feed') # stream desabilitado por hora
@@ -41,12 +43,29 @@ def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 					
-@app.route('/dht')
+@app.route('/timer')
 def temp():
 	return jsonify({
 		'temperatura':dht.temp,
-		'umidade':dht.umid
+		'umidade':dht.umid,
+		'img_links': [v1.img_link, v2.img_link, v3.img_link]
 		})
+		
+@app.route('/')
+def index():
+	return redirect(url_for('home'))
+
+@app.route('/login', methods=['POST'])
+def do_admin_login():
+#	time.sleep(2)
+	if request.form['password'] == 'admim' and request.form['username'] == 'admim':
+		session['logged_in'] = True
+#		time.sleep(3)
+	else:
+#		time.sleep(3)
+		flash('wrong password')
+	return redirect(url_for('home'))
+
 	
 	
 	
@@ -66,6 +85,7 @@ def activate_job():
 								dht.umid, dht.temp]])
 		print('leitura inicial ok')
 		while True:
+#			httpAdress = str(input('Dominio do app: '))
 			init = time.time()
 			#leitura dos sensore
 			s1.read()
@@ -81,7 +101,7 @@ def activate_job():
 				contador = 0 
 			contador += 1
 			print('Run current Task')
-			time.sleep(1)
+			time.sleep(4)
 	thread = threading.Thread(target=run_job)
 	thread.start()
 
@@ -94,4 +114,5 @@ if __name__ == '__main__':
 	v1, v2, v3 = valve(17), valve(27), valve(22) #irrigação
 	s1, s2, s3 = hygrometer(1), hygrometer(2), hygrometer(3) #higrometro
 #	cam  = VideoCamera() # camera
+	app.secret_key = os.urandom(12)
 	app.run(debug=True)
