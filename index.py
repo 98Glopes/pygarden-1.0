@@ -38,7 +38,7 @@ def stream():
 		return render_template('login.html')
 	return render_template('stream.html')
 	
-@app.route('/video_feed') # stream desabilitado por hora
+#@app.route('/video_feed') # stream desabilitado por hora
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -108,4 +108,4 @@ if __name__ == '__main__':
 #	cam  = VideoCamera() # camera
 	app.secret_key = os.urandom(12)
 	port = int(os.environ.get("PORT", 5000))
-	app.run(host='0.0.0.0', port=port)
+	app.run(debug=True)
