@@ -108,4 +108,4 @@ if __name__ == '__main__':
 #	cam  = VideoCamera() # camera
 	app.secret_key = os.urandom(12)
 	port = int(os.environ.get("PORT", 5000))
-	app.run(debug=False, port=port)
+	app.run(host='0.0.0.0', debug=False, port=port)
