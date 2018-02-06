@@ -3,7 +3,7 @@
   document.getElementById("v1").onclick = function() { makeRequest('/valve/v1' , handlePump); };
   document.getElementById("v2").onclick = function() { makeRequest('/valve/v2' , handlePump); };
   document.getElementById("v3").onclick = function() { makeRequest('/valve/v3' , handlePump); };
-  timer = setInterval( function() { makeRequest('/timer' , handleTimer) ;} , 4000 ); 
+  timer = setInterval( function() { makeRequest('/timer' , handleTimer) ;} , 5000 ); 
   var img = ['imgv1','imgv2','imgv3']
   var count = 0;
   

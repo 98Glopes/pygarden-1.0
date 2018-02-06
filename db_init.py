@@ -13,16 +13,16 @@ cursor = conn.cursor()
 cursor.execute("""
 CREATE TABLE pygarden (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        date TEXT NOT NULL,
-        hour TEXT NOT NULL,
-        v1 BOOLEAN NOT NULL,
-		V2 NOOLEAN NOT NULL,
-		V3 BOOLEAN NOT NULL,
-		s1 INTERGER NOT NULL,
-		s2 INTERGER NOT NULL,
-		s3 INTERGER NOT NULL,
-		umid INTERGER NOT NULL,
-		temp INTERGER NOT NULL
+        date TEXT,
+        hour TEXT,
+        v1 REAL NOT NULL,
+		v2 REAL NOT NULL,
+		v3 REAL NOT NULL,
+		s1 REAL NOT NULL,
+		s2 REAL NOT NULL,
+		s3 REAL NOT NULL,
+		umid REAL NOT NULL,
+		temp REAL NOT NULL
 );
 """)
 

@@ -72,39 +72,30 @@ def do_admin_login():
 @app.before_first_request
 def activate_job():
 	def run_job(): 
-	#starta comunicação com a database
-		conn = sqlite3.connect('pygarden.db')
-		curso = conn.cursor()
-		contador = 0
+		#starta comunicação com a database
+		database = dataBase('pygarden.db')
 		#leitura incial dos sensores
-		s1.read()
-		s2.read()
-		s3.read()
-		dht.read()
-		sensores = np.array([[s1.ground, s2.ground, s3.ground,
-								dht.umid, dht.temp]])
+		read = read_sensor(sensores)
 		print('leitura inicial ok')
+		contador = 0
 		while True:
-#			httpAdress = str(input('Dominio do app: '))
 			init = time.time()
-			#leitura dos sensore
-			s1.read()
-			s2.read()
-			s3.read()
-			dht.read()
-			leituras = np.array([[s1.ground, s2.ground, s3.ground,
-								dht.umid, dht.temp]])
-			if contador >= 100:
+			leitura = read_sensor(sensores)
+			read = np.concatenate((read , leitura), axis=0)
+			if contador >= 2:
 				#grava os dados dos sensores a cada 1 minuto e bate uma foto
-				print('Burning')
-				print(dht.read())
+				print('Burning')				
+				read = np.mean(read, axis=0)
+				read = np.around(read, decimals=3)
+				database.burn(read)
+				read = read_sensor(sensores)
 				contador = 0 
+			print('Run current Task')			
+			time.sleep(2)
 			contador += 1
-			print('Run current Task')
-			time.sleep(4)
 	thread = threading.Thread(target=run_job)
 	thread.start()
-
+	
 
 
 if __name__ == '__main__':
@@ -113,6 +104,8 @@ if __name__ == '__main__':
 	dht = dht(4)
 	v1, v2, v3 = valve(17), valve(27), valve(22) #irrigação
 	s1, s2, s3 = hygrometer(1), hygrometer(2), hygrometer(3) #higrometro
+	sensores = [v1,v2,v3,s1,s2,s3,dht] #lista com os objetos dos sensores
 #	cam  = VideoCamera() # camera
 	app.secret_key = os.urandom(12)
-	app.run(debug=True)
+	port = int(os.environ.get("PORT", 5000))
+	app.run(debug=True , port=port)
