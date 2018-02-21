@@ -11,49 +11,53 @@ import numpy as np
 import json
 app = Flask(__name__)
 
+
+@app.route('/')
 @app.route('/home')
 def home(): #home page do pygarden
-	if not session.get('logged_in'):
-		return render_template('login.html')
-	else:
-		return render_template('index.html', img=(v1.img_link , v2.img_link , v3.img_link), sensor=dht.read())
+	return render_template('dash.html', title='PyGARDEN-Dashboard',
+			header=('Dashboard - Acompanhe em tempo real'),
+			sensores={
+				'umid':dht.read()[1],
+				'temp':dht.read()[0],
+				'img':v1.img_link,
+				'hygro': s1.read()
+				})
 	
+
 @app.route('/valve/<valvula>')
 def change_state(valvula): #reexibe a homepage do pygarden, mas atualiza as valvulas
 	if valvula == 'v1':
 		v1.change_state()
-		return v1.genJson('imgv1')
-	elif valvula == 'v2':
-		v2.change_state()
-		return v2.genJson('imgv2')
-	elif valvula == 'v3':
-		v3.change_state()
-		return v3.genJson('imgv3')		
-	return Response('valve not found')
+		return v1.genJson('pump')
+	else:
+		return 'valve not found'
 
 
 @app.route('/stream')
 def stream():
-	if not session.get('logged_in'):
-		return render_template('login.html')
 	return render_template('stream.html')
 	
+
 #@app.route('/video_feed') # stream desabilitado por hora
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 					
+
 @app.route('/timer')
 def temp():
 	return jsonify({
-		'temperatura':dht.temp,
-		'umidade':dht.umid,
-		'img_links': [v1.img_link, v2.img_link, v3.img_link]
+		'temperatura': dht.read()[0],
+		'umidade': dht.read()[1],
+		'src': v1.img_link,
+		'hygro': s1.read()
 		})
 		
-@app.route('/')
+
 def index():
 	return redirect(url_for('home'))
+
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
@@ -67,9 +71,7 @@ def do_admin_login():
 	return redirect(url_for('home'))
 
 	
-	
-	
-@app.before_first_request
+#@app.before_first_request
 def activate_job():
 	def run_job(): 
 		#starta comunicação com a database
@@ -97,15 +99,18 @@ def activate_job():
 	thread.start()
 	
 
+@app.route('/login-screen')
+def login():
+	return render_template('login.html')
 
 if __name__ == '__main__':
 #	inicialização das classes usadas para manipular os sensores	
 	board_init()
 	dht = dht(4)
-	v1, v2, v3 = valve(17), valve(27), valve(22) #irrigação
-	s1, s2, s3 = hygrometer(1), hygrometer(2), hygrometer(3) #higrometro
-	sensores = [v1,v2,v3,s1,s2,s3,dht] #lista com os objetos dos sensores
+	v1 = valve(17) #irrigação
+	s1 = hygrometer(1) #higrometro
+	sensores = [v1,s1,dht] #lista com os objetos dos sensores
 #	cam  = VideoCamera() # camera
 	app.secret_key = os.urandom(12)
 	port = int(os.environ.get("PORT", 5000))
-	app.run(host='0.0.0.0', debug=True, port=port)
+	app.run(debug=True)

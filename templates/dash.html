@@ -1,0 +1,18 @@
+			{% extends "template.html" %} 
+			{% block content %}
+					<div id="dht-temp"><h3 align="center">Temperatura: <spam id="temp">{{ sensores.temp }}</spam>ºC</h3></div>
+					<div id="dht-umid"><h3 align="center">Umidade do ar: <spam id="umid">{{ sensores.umid }}</spam>%</h3></div>
+					<div id="temp-graph"><h1 align="center">Graph recipient</h1></div>
+					<div id="umid-graph"><h1 align="center">Graph recipient</h1></div>
+					<div id="hygrometer"><h3 align="center">Umidade média do solo: <spam id="hygro">{{ sensores.hygro }}</spam>%</h3></div>
+					<div id="valves">
+						<h3 align="center">Irrigação</h3>
+						<h6><br></br></h6>
+						<spam style="cursor: pointer;"><img id="pump" src={{ sensores.img }} width=20%/></spam>
+					
+					</div>
+					<div id="hygro-graph"><h1 align="center">Graph recipient</h1></div>
+				</div>
+				<script type="text/javascript" src="./static/js/main.js">
+				</script>
+			 {% endblock %}

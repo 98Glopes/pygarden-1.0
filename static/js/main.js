@@ -1,9 +1,7 @@
  
 
-  document.getElementById("v1").onclick = function() { makeRequest('/valve/v1' , handlePump); };
-  document.getElementById("v2").onclick = function() { makeRequest('/valve/v2' , handlePump); };
-  document.getElementById("v3").onclick = function() { makeRequest('/valve/v3' , handlePump); };
-  timer = setInterval( function() { makeRequest('/timer' , handleTimer) ;} , 5000 ); 
+  document.getElementById("pump").onclick = function() { makeRequest('/valve/v1' , handlePump); };
+  timer = setInterval( function() { makeRequest('/timer' , handleTimer) ;} , 1500 ); 
   var img = ['imgv1','imgv2','imgv3']
   var count = 0;
   
@@ -48,17 +46,10 @@
       if (httpRequest.status === 200) {
 //		console.log(httpRequest.responseText);	
 		date = JSON.parse(httpRequest.responseText);
-		document.getElementById("temp").innerHTML = date.temperatura +'ºC';
-		document.getElementById("umid").innerHTML = date.umidade + '%';
-		for(var i=0; i<=2 ; i++)
-		{
-			var pump = document.getElementById(img[i]);
-			if (pump.getAttribute('src')!=date.img_links[i])
-			{
-				pump.setAttribute('src', date.img_links[i]);
-			}
-		}
-		
+		document.getElementById("temp").innerHTML = date.temperatura;
+		document.getElementById("umid").innerHTML = date.umidade;
+		document.getElementById("hygro").innerHTML = date.hygro;
+		document.getElementById("pump").setAttribute('src', date.src);		
       } else {
         alert('There was a problem with the request.');
       }
