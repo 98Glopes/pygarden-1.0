@@ -89,7 +89,7 @@ def activate_job():
 			leitura = read_sensor(sensores)
 			database.burn(leitura)
 			print('burned')
-			time.sleep(20)
+			time.sleep(600)
 			database.close()
 	thread = threading.Thread(target=run_job)
 	thread.start()
@@ -117,4 +117,4 @@ if __name__ == '__main__':
 #	cam  = VideoCamera() # camera
 	app.secret_key = os.urandom(12)
 	port = int(os.environ.get("PORT", 5000))
-	app.run(port=port, debug=True)
+	app.run(host='0.0.0.0', port=port, debug=True)
