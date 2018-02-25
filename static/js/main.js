@@ -50,7 +50,8 @@
 		document.getElementById("umid").innerHTML = date.umidade;
 		document.getElementById("hygro").innerHTML = date.hygro;
 		document.getElementById("pump").setAttribute('src', date.src);		
-      } else {
+  
+	  } else {
         alert('There was a problem with the request.');
       }
     }

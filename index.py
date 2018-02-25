@@ -15,6 +15,9 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/home')
 def home(): #home page do pygarden
+	database = dataBase('pygarden.db')
+	charts = database.info_charts()
+	database.close()
 	return render_template('dash.html', title='PyGARDEN-Dashboard',
 			header=('Dashboard - Acompanhe em tempo real'),
 			sensores={
@@ -22,7 +25,12 @@ def home(): #home page do pygarden
 				'temp':dht.read()[0],
 				'img':v1.img_link,
 				'hygro': s1.read()
-				})
+				},
+			date = charts[1],
+			hygro = charts[2],
+			temp = charts[3],
+			umid = charts[4]
+			)
 	
 
 @app.route('/valve/<valvula>')
@@ -51,7 +59,9 @@ def temp():
 		'temperatura': dht.read()[0],
 		'umidade': dht.read()[1],
 		'src': v1.img_link,
-		'hygro': s1.read()
+		'hygro': s1.read(),
+		'labels':[0,1,2,3,4,5,6,7,8,9,10],
+		'data': [0,1,2,3,4,5,6,7,8,9,10]
 		})
 		
 
@@ -71,46 +81,40 @@ def do_admin_login():
 	return redirect(url_for('home'))
 
 	
-#@app.before_first_request
+@app.before_first_request
 def activate_job():
 	def run_job(): 
-		#starta comunicação com a database
-		database = dataBase('pygarden.db')
-		#leitura incial dos sensores
-		read = read_sensor(sensores)
-		print('leitura inicial ok')
-		contador = 0
 		while True:
-			init = time.time()
+			database = dataBase('pygarden.db')
 			leitura = read_sensor(sensores)
-			read = np.concatenate((read , leitura), axis=0)
-			if contador >= 2:
-				#grava os dados dos sensores a cada 1 minuto e bate uma foto
-				print('Burning')				
-				read = np.mean(read, axis=0)
-				read = np.around(read, decimals=3)
-				database.burn(read)
-				read = read_sensor(sensores)
-				contador = 0 
-			print('Run current Task')			
-			time.sleep(2)
-			contador += 1
+			database.burn(leitura)
+			print('burned')
+			time.sleep(20)
+			database.close()
 	thread = threading.Thread(target=run_job)
 	thread.start()
 	
 
-@app.route('/login-screen')
+@app.route('/login_screen')
 def login():
 	return render_template('login.html')
 
+
+@app.route('/info_charts')	
+def charts():
+	return jsonify({
+		'labels':[0,1,2,3,4,5,6,7,8,9,10],
+		'data': [0,1,2,3,4,5,6,7,8,9,10]
+		})
+
+
 if __name__ == '__main__':
-#	inicialização das classes usadas para manipular os sensores	
-	board_init()
+#	inicialização das classes usadas para simular os sensores	
 	dht = dht(4)
 	v1 = valve(17) #irrigação
 	s1 = hygrometer(1) #higrometro
-	sensores = [v1,s1,dht] #lista com os objetos dos sensores
+	sensores = [s1,dht] #lista com os objetos dos sensores
 #	cam  = VideoCamera() # camera
 	app.secret_key = os.urandom(12)
 	port = int(os.environ.get("PORT", 5000))
-	app.run(host='0.0.0.0', port=port, debug=True)
+	app.run(port=port, debug=True)

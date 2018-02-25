@@ -9,7 +9,11 @@ cursor.execute("""
 SELECT * FROM pygarden;
 """)
 
-for linha in cursor.fetchall():
-    print(linha)
-
+result = cursor.fetchall()
+result = result[len(result)-20:]
+retorno = [[1],[],[],[],[]]
+for linha in result:
+	for i in [0,1,2,3,4]:
+		retorno[i].append(linha[i])
+return retorno
 conn.close()

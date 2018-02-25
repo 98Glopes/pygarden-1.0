@@ -227,19 +227,20 @@ a.article, a.article:hover {
 }
 #temp-graph {
 	width: 50%;
-	height: 130px;
+	height: 150px;
 	float: left;
 	background: #F0F0F0;
 	color: #FFFFFF;
+	padding: 1%;
 	
 }
 #umid-graph {
 	width: 50%;
-	height: 130px;
+	height: 150px;
 	float: left;
 	background: #F0F0F0;
 	color: #FFFFFF;
-	
+	padding: 1%;
 }
 #hygrometer{
 	width: 100%;
@@ -262,7 +263,7 @@ a.article, a.article:hover {
 	align: left;
 	float: left;
 }
-#valves h3{
+#valves h3, spam{
 	color: #346B6B;
 	font-weight: bold;
 	align: center;
@@ -277,4 +278,8 @@ a.article, a.article:hover {
 	background: #F0F0F0;
 	float: right;
 	color: #FFFFFF;
+	padding: 1%;
+}
+
+.graph {
 }

@@ -1,9 +1,10 @@
 			{% extends "template.html" %} 
 			{% block content %}
+					
 					<div id="dht-temp"><h3 align="center">Temperatura: <spam id="temp">{{ sensores.temp }}</spam>ºC</h3></div>
 					<div id="dht-umid"><h3 align="center">Umidade do ar: <spam id="umid">{{ sensores.umid }}</spam>%</h3></div>
-					<div id="temp-graph"><h1 align="center">Graph recipient</h1></div>
-					<div id="umid-graph"><h1 align="center">Graph recipient</h1></div>
+					<div id="temp-graph"><canvas class="graph" id="myChart"></canvas></div>
+					<div id="umid-graph"><canvas class="graph" id="chumid"></canvas></div>
 					<div id="hygrometer"><h3 align="center">Umidade média do solo: <spam id="hygro">{{ sensores.hygro }}</spam>%</h3></div>
 					<div id="valves">
 						<h3 align="center">Irrigação</h3>
@@ -11,8 +12,152 @@
 						<spam style="cursor: pointer;"><img id="pump" src={{ sensores.img }} width=20%/></spam>
 					
 					</div>
-					<div id="hygro-graph"><h1 align="center">Graph recipient</h1></div>
+					<div id="hygro-graph"><canvas id="chhygro"></canvas></div>
 				</div>
-				<script type="text/javascript" src="./static/js/main.js">
+				
+				<script type="text/javascript" src="./static/js/main.js"></script>
+				<script type="text/javascript" src="./static/js/Chart.min.js"></script>
+				<script id="tempGraph">
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+	  Chart.defaults.global.legend.display = false;
+      Chart.defaults.global.responsive = true;
+
+      // define the chart data
+      var chartData = {
+        labels : [{% for data in date %}
+                   "{{ data }}",
+                  {% endfor %}],
+        datasets : [{
+		    label: 'Temperatura',
+            fill: true,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : [{% for item in temp %}
+                   "{{ item }}",
+                  {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("myChart").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+				
+				</script>
+				
+				
+				<script id="umidGraph">
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+      Chart.defaults.global.responsive = true;
+
+      // define the chart data
+      var chartData = {
+        labels : [{% for data in date %}
+                   "{{ data }}",
+                  {% endfor %}],
+        datasets : [{
+		    label: 'Temperatura',
+            fill: true,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : [{% for item in umid %}
+                   "{{ item }}",
+                  {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("chumid").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+	  </script>
+			 
+				
+				<script id="hygroGraph">
+      // Global parameters:
+      // do not resize the chart canvas when its container does (keep at 600x400px)
+      Chart.defaults.global.responsive = true;
+	  Chart.defaults.global.tooltips.enabled = false;
+
+      // define the chart data
+      var chartData = {
+        labels : [{% for data in date %}
+                   "{{ data }}",
+                  {% endfor %}],
+        datasets : [{
+		    label: 'Temperatura',
+            fill: true,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data : [{% for item in hygro %}
+                   "{{ item }}",
+                  {% endfor %}],
+            spanGaps: false
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("chhygro").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+      });
+				
 				</script>
 			 {% endblock %}

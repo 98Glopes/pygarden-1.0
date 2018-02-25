@@ -5,6 +5,8 @@ import numpy as np
 from random import randint
 import sqlite3
 from index import *
+from datetime import datetime
+
 
 '''
 GPIO -> Hardware
@@ -106,7 +108,7 @@ def read_sensor(obj):
 			values = values + x.read()
 		except Exception:
 			values.append(x.read())
-	return(np.array([[values]]))
+	return values
 
 	
 class dataBase(object):
@@ -119,26 +121,38 @@ class dataBase(object):
 		self.cursor = self.conn.cursor()
 	
 	def burn(self, read):
-		v1, v2, v3 = read[0][0], read[0][1], read[0][2]
-		s1, s2, s3 = read[0][3], read[0][4], read[0][5]
-		temp, umid = read[0][6], read[0][7]
+		s1, umid, temp = read[0], read[1], read[2]
+		date = datetime.now()
+		date = str(date)
 		self.cursor.execute( """
-		INSERT INTO pygarden (v1, v2, v3, s1, s2, s3, temp, umid)
-		VALUES(?, ?, ?, ?, ?, ?, ?, ?)
-		""" , (v1, v2, v3, s1, s2, s3, temp, umid))
+		INSERT INTO pygarden (date, s1, temp, umid)
+		VALUES(?, ?, ?, ?)
+		""" , (date, s1, temp, umid))
 		self.conn.commit()
+	
+	def info_charts(self):
+		self.cursor.execute("""
+		SELECT * FROM pygarden;
+			""")
+		
+		result = self.cursor.fetchall()
+		result = result[len(result)-30:]
+		retorno = [[],[],[],[],[]]
+		for linha in result:
+			for i in [0,1,2,3,4]:
+				retorno[i].append(linha[i])
+		return retorno
+		
+	def close(self):
+		self.conn.close()
+		
 
 	
 if __name__ ==	 '__main__':
-	obj =[]
-	v1, v2, v3 = valve(17), valve(27), valve(22) #irriga??o
-	s1, s2, s3 = hygrometer(1), hygrometer(2), hygrometer(3) #higrometro
-	dht = dht(9)
-	sensores = [v1,v2,v3,s1,s2,s3,dht]
+
+	bd = dataBase('pygarden.db')
+	bd.burn([0,1,2])
 	
-	array = read_sensor(sensores)
-	
-	print (array)
 	
 
 	

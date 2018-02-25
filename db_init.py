@@ -14,13 +14,7 @@ cursor.execute("""
 CREATE TABLE pygarden (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         date TEXT,
-        hour TEXT,
-        v1 REAL NOT NULL,
-		v2 REAL NOT NULL,
-		v3 REAL NOT NULL,
 		s1 REAL NOT NULL,
-		s2 REAL NOT NULL,
-		s3 REAL NOT NULL,
 		umid REAL NOT NULL,
 		temp REAL NOT NULL
 );
