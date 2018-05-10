@@ -1,3 +1,5 @@
+A continuação deste projeto pode ser vista em https://github.com/98Glopes/pygrdn2
+
 # pygarden-1.0
 
 ## Objetivos:
